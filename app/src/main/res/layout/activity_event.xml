@@ -7,42 +7,37 @@
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/appbar"
-        android:layout_height="192dp"
+        android:layout_height="@dimen/map_height"
         android:layout_width="match_parent">
 
         <android.support.design.widget.CollapsingToolbarLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:toolbarId="@+id/toolbar"
-            app:layout_scrollFlags="scroll|enterAlways|enterAlwaysCollapsed"
+            app:layout_scrollFlags="scroll|enterAlways|snap"
             app:layout_scrollInterpolator="@android:anim/decelerate_interpolator"
             app:contentScrim="?attr/colorPrimary">
 
-            <ImageView
-                android:id="@+id/app_bar_image"
+            <fragment xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:map="http://schemas.android.com/apk/res-auto"
+                android:name="com.google.android.gms.maps.MapFragment"
+                android:id="@+id/event_map"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                app:layout_collapseMode="parallax"
-                android:src="@android:drawable/sym_def_app_icon"
-                android:scaleType="centerCrop" />
+                map:cameraZoom="18"
+                map:mapType="normal"
+                map:liteMode="true"
+                tools:ignore="MissingPrefix"
+                tools:layout="@android:layout/simple_list_item_1"
+                />
 
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar"
                 android:layout_height="?attr/actionBarSize"
-                android:layout_width="match_parent"></android.support.v7.widget.Toolbar>
+                android:layout_width="match_parent"/>
 
         </android.support.design.widget.CollapsingToolbarLayout>
     </android.support.design.widget.AppBarLayout>
-
-    <android.support.design.widget.FloatingActionButton
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        app:layout_anchor="@id/appbar"
-        app:layout_anchorGravity="bottom|right|end"
-        android:src="@android:drawable/ic_input_add"
-        android:layout_marginEnd="16dp"
-        android:clickable="true"
-        app:fabSize="mini" />
 
     <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
@@ -57,7 +52,7 @@
             android:paddingLeft="@dimen/activity_horizontal_margin"
             android:paddingRight="@dimen/activity_horizontal_margin"
             android:paddingTop="@dimen/activity_vertical_margin"
-            tools:context="com.teammarshmallow.eventapp.eventplanner.EventActivity">
+            tools:context="com.teammarshmallow.eventapp.eventplanner.Event.EventActivity">
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/event_view"
