@@ -2,6 +2,8 @@ package com.teammarshmallow.eventapp.eventplanner;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
@@ -23,5 +25,10 @@ public class EventDetailActivity extends AppCompatActivity implements OnMapReady
     @Override
     public void onMapReady(GoogleMap googleMap) {
         this.googleMap = googleMap;
+    }
+
+    public void registerToEvent(View view) {
+        //Register to event
+        Toast.makeText(this, "Registered!", Toast.LENGTH_SHORT).show();
     }
 }

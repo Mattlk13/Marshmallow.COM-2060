@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceScreen
+        android:key="button_personal_details"
+        android:title="@string/personalDetails">
+
+        <EditTextPreference
+            android:key="pref_name"
+            android:title="@string/pref_name"/>
+
+        <EditTextPreference
+            android:key="pref_age"
+            android:title="@string/pref_age"/>
+
+    </PreferenceScreen>
+
+    <CheckBoxPreference
+        android:key="pref_location"
+        android:title="Location tracking"
+        android:summary="Use your devices location to display relevant events nearby"
+        android:defaultValue="true"/>
+
+</PreferenceScreen>
