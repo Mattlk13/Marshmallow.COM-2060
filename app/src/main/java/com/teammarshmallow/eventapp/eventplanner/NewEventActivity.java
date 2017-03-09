@@ -1,13 +1,49 @@
 package com.teammarshmallow.eventapp.eventplanner;
 
+import android.support.annotation.NonNull;
+import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-public class NewEventActivity extends AppCompatActivity {
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.teammarshmallow.eventapp.eventplanner.Data.LocationHelper;
+
+public class NewEventActivity extends AppCompatActivity implements OnMapReadyCallback {
+
+    GoogleMap googleMap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_event);
+        setAppBarDragBehaivour();
+
+        MapFragment mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.new_event_map);
+        mapFragment.getMapAsync(this);
+    }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        this.googleMap = googleMap;
+        //Temp set location
+        googleMap.moveCamera(CameraUpdateFactory.newLatLng(new LocationHelper(this).getCurrentLocation()));
+    }
+
+    private void setAppBarDragBehaivour(){
+        AppBarLayout appBarLayout = (AppBarLayout) findViewById(R.id.appbar);
+        CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams) appBarLayout.getLayoutParams();
+        AppBarLayout.Behavior behavior = new AppBarLayout.Behavior();
+        behavior.setDragCallback(new AppBarLayout.Behavior.DragCallback(){
+
+            @Override
+            public boolean canDrag(@NonNull AppBarLayout appBarLayout) {
+                return false;
+            }
+        });
+        params.setBehavior(behavior);
     }
 }

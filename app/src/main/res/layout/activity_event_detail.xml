@@ -25,10 +25,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 map:cameraZoom="18"
-                map:mapType="normal"
-                map:liteMode="true"
-                tools:ignore="MissingPrefix"
-                tools:layout="@android:layout/simple_list_item_1" />
+                map:mapType="normal"/>
 
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar"

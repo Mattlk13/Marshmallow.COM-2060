@@ -18,17 +18,19 @@
             app:layout_scrollInterpolator="@android:anim/decelerate_interpolator"
             app:contentScrim="?attr/colorPrimary">
 
-            <fragment xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:map="http://schemas.android.com/apk/res-auto"
-                android:name="com.google.android.gms.maps.MapFragment"
-                android:id="@+id/event_map"
+            <android.support.constraint.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                map:cameraZoom="18"
-                map:mapType="normal"
-                tools:ignore="MissingPrefix"
-                tools:layout="@android:layout/simple_list_item_1"
-                />
+                android:layout_height="match_parent">
+
+                <fragment xmlns:android="http://schemas.android.com/apk/res/android"
+                    xmlns:map="http://schemas.android.com/apk/res-auto"
+                    android:name="com.google.android.gms.maps.SupportMapFragment"
+                    android:id="@+id/event_map"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    map:cameraZoom="14"
+                    map:mapType="normal"/>
+            </android.support.constraint.ConstraintLayout>
 
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar"
