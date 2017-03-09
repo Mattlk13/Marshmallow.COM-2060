@@ -2,8 +2,12 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.teammarshmallow.eventapp.eventplanner">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -25,7 +29,16 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyBIbjcyvrnq0bs9hNS4COqISF5ARuGlZiI" />
 
-        <activity android:name=".NewEventActivity"></activity>
+        <activity android:name=".NewEventActivity" />
+        <activity
+            android:name=".CalendarAPI"
+            android:label="Google Calendar API Quickstart">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>
