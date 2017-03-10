@@ -14,6 +14,9 @@ public class SettingsActivity extends PreferenceActivity {
         getFragmentManager().beginTransaction().replace(android.R.id.content, new MyPreferenceFragment()).commit();
     }
 
+    /**
+     * Preference fragment that stores settings available to the entire app.
+     */
     public static class MyPreferenceFragment extends PreferenceFragment
     {
         @Override
