@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:padding="15dp"
-    android:onClick="">
+    android:onClick="openDetailActivity">
 
     <TextView
         android:text="Event Name"

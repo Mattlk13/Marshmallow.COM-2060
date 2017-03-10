@@ -22,6 +22,10 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHol
     ArrayList<CalendarDemo> arrayList = new ArrayList<>();
     Context context;
 
+    /**
+     * Constructor to get the activity that implements the adapter
+     * @param context The Recycler view attached to the adapter
+     */
     public EventAdapter(Context context){
         this.context = context;
 
@@ -31,22 +35,25 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHol
         }
     }
 
+    /**
+     * Method that creates a blank event layout
+     * @param parent Recycler view container
+     * @param viewType
+     * @return A blank event item layout
+     */
     @Override
     public EventViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View eventView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.event_item_layout, parent, false);
 
-        //Preliminary test to establish how the flow of activities works
-        eventView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                context.getApplicationContext()
-                        .startActivity(new Intent(context, EventDetailActivity.class));
-            }
-        });
         return new EventViewHolder(eventView);
     }
 
+    /**
+     * Method to bind data to the item layout.
+     * @param holder The blank item layout.
+     * @param position The position in the list of the recycler view.
+     */
     @Override
     public void onBindViewHolder(EventViewHolder holder, int position) {
         /* Get the calendar entry from the ArrayList
@@ -63,6 +70,10 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHol
         holder.eCategory.setText(demo.getCategory());
     }
 
+    /**
+     * Method to return the size of the arraylist containing event objects.
+     * @return An int of the size of the arraylist.
+     */
     @Override
     public int getItemCount() {
         /* Need to return the count of however many elements are in the calendar ArrayList
@@ -72,7 +83,9 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHol
         return arrayList.size();
     }
 
-
+    /**
+     * A class that maps variable names onto each field of the item layout.
+     */
     public class EventViewHolder extends RecyclerView.ViewHolder {
         private TextView eTitle;
         private TextView eDescription;
