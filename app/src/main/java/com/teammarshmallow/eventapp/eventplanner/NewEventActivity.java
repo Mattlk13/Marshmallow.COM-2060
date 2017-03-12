@@ -18,12 +18,14 @@ import com.teammarshmallow.eventapp.eventplanner.Data.LocationHelper;
 public class NewEventActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     GoogleMap googleMap;
+    LocationHelper locationHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_event);
         setAppBarDragBehaivour();
+        locationHelper = new LocationHelper(this);
 
         MapFragment mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.new_event_map);
         mapFragment.getMapAsync(this);
@@ -31,26 +33,14 @@ public class NewEventActivity extends AppCompatActivity implements OnMapReadyCal
 
     /**
      * Method to setup the map fragment, by moving to the user's location.
-     * @param googleMap The map fragment
+     * @param map The map fragment
      */
     @Override
-    public void onMapReady(GoogleMap googleMap) {
-        this.googleMap = googleMap;
+    public void onMapReady(GoogleMap map) {
+        googleMap = map;
 
-        //Check location permissions, and if not granted, as for them
-        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
-                ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-
-            ActivityCompat.requestPermissions((FragmentActivity) this,
-                    new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
-                    1);
-            ActivityCompat.requestPermissions(this,
-                    new String[]{android.Manifest.permission.ACCESS_COARSE_LOCATION},
-                    1);
-        }
-        this.googleMap.setMyLocationEnabled(true);
-
-        this.googleMap.moveCamera(CameraUpdateFactory.newLatLng(new LocationHelper(this).getCurrentLocation()));
+        locationHelper.enableMapLocationIcon(googleMap);
+        googleMap.moveCamera(CameraUpdateFactory.newLatLng(locationHelper.getCurrentLocation()));
     }
 
     /**

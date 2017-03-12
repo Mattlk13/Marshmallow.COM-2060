@@ -1,5 +1,6 @@
 package com.teammarshmallow.eventapp.eventplanner.Data;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -9,6 +10,7 @@ import android.support.v4.app.FragmentActivity;
 
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
 
 /**
@@ -20,7 +22,7 @@ public class LocationHelper {
     private GoogleApiClient apiClient;
     private static LatLng location;
 
-    public LocationHelper(Context context){
+    public LocationHelper(Context context) {
         this.context = context;
         initApi();
     }
@@ -28,7 +30,7 @@ public class LocationHelper {
     /**
      * Creates an auto-managed API client to interact with the location services API.
      */
-    private void initApi(){
+    private void initApi() {
         //Instantiates a new Google API, which is auto-managed.
         apiClient = new GoogleApiClient.Builder(context)
                 .enableAutoManage((FragmentActivity) context /* FragmentActivity */,
@@ -42,7 +44,7 @@ public class LocationHelper {
      * known location from the network.
      * @return A LatLng of the current position of the device.
      */
-    public LatLng getCurrentLocation(){
+    public LatLng getCurrentLocation() {
 
         //Asks the user for permission to access location data.
         if (ActivityCompat.checkSelfPermission(context, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
@@ -58,15 +60,27 @@ public class LocationHelper {
         //Gets last known location, using the API client.
         Location lastLoc = LocationServices.FusedLocationApi.getLastLocation(apiClient);
 
-        if(lastLoc != null){
+        if (lastLoc != null) {
             location = new LatLng(lastLoc.getLatitude(), lastLoc.getLongitude());
-        }
-        else
-        {
+        } else {
             LocationManager locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
             Location loc = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
             location = new LatLng(loc.getLatitude(), loc.getLongitude());
         }
         return location;
+    }
+
+    public void enableMapLocationIcon(GoogleMap googleMap) {
+        if (ActivityCompat.checkSelfPermission(context, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(context, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+
+            ActivityCompat.requestPermissions((FragmentActivity) context,
+                    new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
+                    1);
+            ActivityCompat.requestPermissions((FragmentActivity) context,
+                    new String[]{android.Manifest.permission.ACCESS_COARSE_LOCATION},
+                    1);
+        }
+        googleMap.setMyLocationEnabled(true);
     }
 }
