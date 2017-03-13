@@ -43,19 +43,8 @@ public class EventDetailActivity extends AppCompatActivity implements OnMapReady
     @Override
     public void onMapReady(GoogleMap googleMap) {
         this.googleMap = googleMap;
-        //Check location permissions, and if not granted, as for them
-        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
-                ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 
-            ActivityCompat.requestPermissions((FragmentActivity) this,
-                    new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
-                    1);
-            ActivityCompat.requestPermissions(this,
-                    new String[]{android.Manifest.permission.ACCESS_COARSE_LOCATION},
-                    1);
-        }
-        this.googleMap.setMyLocationEnabled(true);
-        this.googleMap.moveCamera(CameraUpdateFactory.newLatLng(new LocationHelper(this).getCurrentLocation()));
+        //Move camera to event location.
     }
 
     /**

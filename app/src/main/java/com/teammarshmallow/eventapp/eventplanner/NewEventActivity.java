@@ -16,13 +16,17 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.teammarshmallow.eventapp.eventplanner.Data.LocationHelper;
 
 public class NewEventActivity extends AppCompatActivity implements OnMapReadyCallback {
+    private final int LOCATION_PERMISSION = 1;
 
     GoogleMap googleMap;
+    LocationHelper locationHelper;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_event);
+        locationHelper = new LocationHelper(this);
         setAppBarDragBehaivour();
 
         MapFragment mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.new_event_map);
@@ -37,20 +41,44 @@ public class NewEventActivity extends AppCompatActivity implements OnMapReadyCal
     public void onMapReady(GoogleMap googleMap) {
         this.googleMap = googleMap;
 
-        //Check location permissions, and if not granted, as for them
+        setMapPosition();
+    }
+
+    /**
+     * Helper method to set the location of the current google map to
+     */
+    private void setMapPosition(){
         if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
                 ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 
-            ActivityCompat.requestPermissions((FragmentActivity) this,
+            ActivityCompat.requestPermissions( this,
                     new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
-                    1);
+                    LOCATION_PERMISSION);
             ActivityCompat.requestPermissions(this,
                     new String[]{android.Manifest.permission.ACCESS_COARSE_LOCATION},
-                    1);
+                    LOCATION_PERMISSION);
         }
-        this.googleMap.setMyLocationEnabled(true);
+    }
 
-        this.googleMap.moveCamera(CameraUpdateFactory.newLatLng(new LocationHelper(this).getCurrentLocation()));
+    /**
+     * Method that handles permission request results, using the constants defined above.
+     * @param requestCode Value passed defining the event that requested the permission
+     * @param permissions The permission the event requested
+     * @param grantResults The permissions granted to the app
+     */
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        switch (requestCode){
+            case LOCATION_PERMISSION: {
+                if(grantResults.length < 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                    if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+
+                        this.googleMap.setMyLocationEnabled(true);
+                        this.googleMap.moveCamera(CameraUpdateFactory.newLatLng(locationHelper.getCurrentLocation()));
+                    }
+                }
+            }
+        }
     }
 
     /**

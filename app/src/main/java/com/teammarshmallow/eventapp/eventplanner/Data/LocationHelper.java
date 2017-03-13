@@ -45,28 +45,24 @@ public class LocationHelper {
     public LatLng getCurrentLocation(){
 
         //Asks the user for permission to access location data.
-        if (ActivityCompat.checkSelfPermission(context, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
-                ActivityCompat.checkSelfPermission(context, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        if (ActivityCompat.checkSelfPermission(context, android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(context, android.Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
 
-            ActivityCompat.requestPermissions((FragmentActivity) context,
-                    new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
-                    1);
-            ActivityCompat.requestPermissions((FragmentActivity) context,
-                    new String[]{android.Manifest.permission.ACCESS_COARSE_LOCATION},
-                    1);
-        }
-        //Gets last known location, using the API client.
-        Location lastLoc = LocationServices.FusedLocationApi.getLastLocation(apiClient);
+            Location lastLoc = LocationServices.FusedLocationApi.getLastLocation(apiClient);
 
-        if(lastLoc != null){
-            location = new LatLng(lastLoc.getLatitude(), lastLoc.getLongitude());
+            if(lastLoc != null){
+                location = new LatLng(lastLoc.getLatitude(), lastLoc.getLongitude());
+            }
+            else
+            {
+                LocationManager locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+                Location loc = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+                location = new LatLng(loc.getLatitude(), loc.getLongitude());
+            }
+            return location;
         }
-        else
-        {
-            LocationManager locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
-            Location loc = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-            location = new LatLng(loc.getLatitude(), loc.getLongitude());
-        }
-        return location;
+        return new LatLng(0,0);
+
     }
+
 }
