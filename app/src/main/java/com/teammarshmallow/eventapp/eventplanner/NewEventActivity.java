@@ -11,39 +11,18 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.teammarshmallow.eventapp.eventplanner.Data.LocationHelper;
+import com.teammarshmallow.eventapp.eventplanner.MapActivity;
+import com.teammarshmallow.eventapp.eventplanner.R;
 
-public class NewEventActivity extends AppCompatActivity implements OnMapReadyCallback {
-
-    GoogleMap googleMap;
+public class NewEventActivity extends MapActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_new_event);
-        setAppBarDragBehaivour();
-
-        MapFragment mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.new_event_map);
-        mapFragment.getMapAsync(this);
     }
 
     @Override
-    public void onMapReady(GoogleMap googleMap) {
-        this.googleMap = googleMap;
-        //Temp set location
-        googleMap.moveCamera(CameraUpdateFactory.newLatLng(new LocationHelper(this).getCurrentLocation()));
-    }
-
-    private void setAppBarDragBehaivour(){
-        AppBarLayout appBarLayout = (AppBarLayout) findViewById(R.id.appbar);
-        CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams) appBarLayout.getLayoutParams();
-        AppBarLayout.Behavior behavior = new AppBarLayout.Behavior();
-        behavior.setDragCallback(new AppBarLayout.Behavior.DragCallback(){
-
-            @Override
-            public boolean canDrag(@NonNull AppBarLayout appBarLayout) {
-                return false;
-            }
-        });
-        params.setBehavior(behavior);
+    protected int getLayoutResourceId() {
+        return R.layout.activity_new_event;
     }
 }
