@@ -25,6 +25,9 @@ public class LocationHelper {
         initApi();
     }
 
+    /**
+     * Creates an auto-managed API client to interact with the location services API.
+     */
     private void initApi(){
         //Instantiates a new Google API, which is auto-managed.
         apiClient = new GoogleApiClient.Builder(context)
@@ -34,6 +37,11 @@ public class LocationHelper {
                 .build();
     }
 
+    /**
+     * Method that queries the API client for a GPS location, and if nothing is found, returns the last
+     * known location from the network.
+     * @return A LatLng of the current position of the device.
+     */
     public LatLng getCurrentLocation(){
 
         //Asks the user for permission to access location data.
