@@ -1,7 +1,6 @@
 package com.teammarshmallow.eventapp.eventplanner;
 
 import android.Manifest;
-import android.app.Activity;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -13,11 +12,9 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.teammarshmallow.eventapp.eventplanner.Data.LocationHelper;
-import com.teammarshmallow.eventapp.eventplanner.R;
 
 /**
  * Created by Adam Young on 13/03/2017.
@@ -26,6 +23,7 @@ import com.teammarshmallow.eventapp.eventplanner.R;
 public abstract class MapActivity extends AppCompatActivity implements OnMapReadyCallback {
     private LocationHelper locationHelper;
     private GoogleMap map;
+    private SupportMapFragment mapFragment;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -35,7 +33,18 @@ public abstract class MapActivity extends AppCompatActivity implements OnMapRead
 
         locationHelper = new LocationHelper(this);
 
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+        mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+        mapFragment.getMapAsync(this);
+}
+
+    /**
+     *  Method called when the activity is started for the first time.
+     */
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        getLocationHelper().requestLocationPermission();
         mapFragment.getMapAsync(this);
     }
 
@@ -52,6 +61,28 @@ public abstract class MapActivity extends AppCompatActivity implements OnMapRead
 
             map.setMyLocationEnabled(true);
             map.moveCamera(CameraUpdateFactory.newLatLng(locationHelper.getCurrentLocation()));
+        }
+    }
+
+    /**
+     * Method that is called when the permission request dialog is responded to.
+     * @param requestCode Int that corresponds to the permission type requested.
+     * @param permissions String array of permissions that have been granted.
+     * @param grantResults Int array of results that have been granted.
+     */
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        switch (requestCode){
+            case 1:
+                if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+
+                    if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
+                            && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+
+                        map.setMyLocationEnabled(true);
+                        map.animateCamera(CameraUpdateFactory.newLatLng(locationHelper.getCurrentLocation()));
+                    }
+                }
         }
     }
 

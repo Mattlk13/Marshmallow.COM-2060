@@ -22,6 +22,7 @@ public class LocationHelper {
 
     public LocationHelper(Context context){
         this.context = context;
+        location = new LatLng(0,0);
         initApi();
     }
 
@@ -42,9 +43,33 @@ public class LocationHelper {
      * known location from the network.
      * @return A LatLng of the current position of the device.
      */
-    public LatLng getCurrentLocation(){
+    public LatLng getCurrentLocation() {
 
         //Asks the user for permission to access location data.
+        if (ActivityCompat.checkSelfPermission(context, android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(context, android.Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            apiClient.connect();
+
+            //Gets last known location, using the API client.
+            Location lastLoc = LocationServices.FusedLocationApi.getLastLocation(apiClient);
+            if(lastLoc != null){
+                location = new LatLng(lastLoc.getLatitude(), lastLoc.getLongitude());
+                return location;
+            }
+
+            LocationManager locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+            Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+
+            if(lastKnownLocation != null)
+                location = new LatLng(lastKnownLocation.getLatitude(),lastKnownLocation.getLongitude());
+        }
+        return location;
+    }
+
+    /**
+     * Method to request fine and coarse permission locations.
+     */
+    public void requestLocationPermission(){
         if (ActivityCompat.checkSelfPermission(context, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
                 ActivityCompat.checkSelfPermission(context, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 
@@ -55,18 +80,5 @@ public class LocationHelper {
                     new String[]{android.Manifest.permission.ACCESS_COARSE_LOCATION},
                     1);
         }
-        //Gets last known location, using the API client.
-        Location lastLoc = LocationServices.FusedLocationApi.getLastLocation(apiClient);
-
-        if(lastLoc != null){
-            location = new LatLng(lastLoc.getLatitude(), lastLoc.getLongitude());
-        }
-        else
-        {
-            LocationManager locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
-            Location loc = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-            location = new LatLng(loc.getLatitude(), loc.getLongitude());
-        }
-        return location;
     }
 }
