@@ -2,6 +2,7 @@ package com.teammarshmallow.eventapp.eventplanner.Event;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -46,6 +47,13 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHol
         View eventView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.event_item_layout, parent, false);
 
+        eventView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                context.startActivity(new Intent(context, EventDetailActivity.class));
+            }
+        });
+
         return new EventViewHolder(eventView);
     }
 
@@ -56,13 +64,6 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHol
      */
     @Override
     public void onBindViewHolder(EventViewHolder holder, int position) {
-        /* Get the calendar entry from the ArrayList
-        holder.eTitle = null; //Map each value from the entry to each value
-        holder.eDescription = null;
-        holder.eDistance = null;
-        holder.eCategory = null;
-        */
-
         CalendarDemo demo = arrayList.get(position);
         holder.eTitle.setText(demo.getTitle());
         holder.eDescription.setText(demo.getDescription());

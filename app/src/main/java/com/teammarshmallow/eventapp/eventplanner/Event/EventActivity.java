@@ -8,7 +8,9 @@ import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.teammarshmallow.eventapp.eventplanner.EventDetailActivity;
 import com.teammarshmallow.eventapp.eventplanner.MapActivity;
 import com.teammarshmallow.eventapp.eventplanner.NewEventActivity;
 import com.teammarshmallow.eventapp.eventplanner.R;
@@ -16,7 +18,6 @@ import com.teammarshmallow.eventapp.eventplanner.SettingsActivity;
 
 public class EventActivity extends MapActivity {
 
-    private GoogleMap googleMap;
     private RecyclerView mRecyclerView;
     private RecyclerView.LayoutManager mLayoutManager;
     private RecyclerView.Adapter mAdapter;
@@ -39,6 +40,9 @@ public class EventActivity extends MapActivity {
         return true;
     }
 
+    /**
+     * Method to instantiate the EventAdapter and attach it to the current RecyclerView.
+     */
     private void initRecyclerView(){
         mRecyclerView = (RecyclerView) findViewById(R.id.event_view);
         mLayoutManager = new LinearLayoutManager(this);
